@@ -1,0 +1,15 @@
+{
+  "name": "Creative Coding PWA",
+  "short_name": "CC PWA",
+  "start_url": "/",
+  "display": "fullscreen",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/assets/sword.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
