@@ -1,5 +1,5 @@
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js')
+  navigator.serviceWorker.register('src/sw.js')
     .then((registration) => {
       console.log('Service Worker registrato con successo:', registration.scope);
     })
@@ -8,11 +8,18 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+const buttonShare = document.querySelector('[data-button="share"]');
+
+buttonShare.addEventListener("click", event => {
+  event.stopImmediatePropagation();
+  captureScreenshot();
+});
+
 
 let canvasElement; // Variabile per il riferimento al canvas
 let cols, rows; // Numero di colonne e righe
 let grid = []; // Griglia per memorizzare i colori
-let tileSize = 50; // Dimensione di ogni casella
+let tileSize = 30; // Dimensione di ogni casella
 let currentColor; // Colore corrente durante il trascinamento
 let isMoving = false; // Flag per tracciare il movimento
 let initialTouch = null; // Memorizza la posizione iniziale del tocco
@@ -20,6 +27,7 @@ let touchedCell = null; // Memorizza la casella toccata
 let touchStartTime = 0; // Memorizza l'ora di inizio del tocco
 
 let allOn = false; // Flag per controllare se tutte le caselle sono "on"
+let atLeastOneIsOn = false; // Flag per controllare che almeno una casella sia in "on"
 let autoChangeInterval = 3000; // Intervallo di tempo per il cambio colore automatico (in ms)
 let lastAutoChangeTime = 0; // Ultimo momento in cui è avvenuto il cambio colore automatico
 
@@ -70,11 +78,28 @@ function draw() {
     if (!allOn) break;
   }
 
+  // Verifica se almeno una caselle è in "on"
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      if (grid[i][j].isOn) {
+        atLeastOneIsOn = true;
+        break;
+      }
+    }
+    if (atLeastOneIsOn) break;
+  }
+
+  if(atLeastOneIsOn) {
+    buttonShare.classList.add("open");
+  } else {
+    buttonShare.classList.remove("open");
+  }
+
   // Se tutte le caselle sono "on", cambia colore automaticamente ogni tot secondi
   if (allOn && millis() - lastAutoChangeTime > autoChangeInterval) {
     lastAutoChangeTime = millis();
     //changeColorsWithPaths(); // Cambia colore con tracciati ramificati
-    captureScreenshot();
+    //captureScreenshot();
   }
 }
 
@@ -196,8 +221,8 @@ function captureScreenshot() {
     const file = new File([blob], "screenshot.png", { type: "image/png" });
     
     navigator.share({
-      title: "Condividi il tuo tracciato",
-      text: "Guarda cosa ho creato!",
+      title: "Condividi la tua Pixel Art",
+      text: "Questa è Pixel Art!",
       files: [file]
     }).catch(console.error);
   } else {
