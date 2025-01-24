@@ -1,3 +1,14 @@
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then((registration) => {
+      console.log('Service Worker registrato con successo:', registration.scope);
+    })
+    .catch((error) => {
+      console.error('Registrazione del Service Worker fallita:', error);
+    });
+}
+
+
 let canvasElement; // Variabile per il riferimento al canvas
 let cols, rows; // Numero di colonne e righe
 let grid = []; // Griglia per memorizzare i colori
