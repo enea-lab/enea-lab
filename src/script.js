@@ -10,10 +10,7 @@ if ('serviceWorker' in navigator) {
 
 const buttonShare = document.querySelector('[data-button="share"]');
 
-buttonShare.addEventListener("click", event => {
-  event.stopImmediatePropagation();
-  captureScreenshot();
-});
+buttonShare.addEventListener('touchend', e => captureScreenshot(e), false);
 
 
 let canvasElement; // Variabile per il riferimento al canvas
@@ -207,8 +204,10 @@ function changeColorsWithPaths() {
 }
 
 // Funzione per catturare e condividere lo screenshot
-function captureScreenshot() {
-   if (!canvasElement) {
+function captureScreenshot(e) {
+  e.stopImmediatePropagation();
+
+  if (!canvasElement) {
     console.error("Il canvas non è stato trovato!");
     return;
   }
