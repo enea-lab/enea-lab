@@ -93,10 +93,13 @@ function draw() {
     buttonShare.classList.remove("open");
   }
 
-  // Se tutte le caselle sono "on", cambia colore automaticamente ogni tot secondi
-  if (allOn && millis() - lastAutoChangeTime > autoChangeInterval) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const random = urlParams.get('random') ? true : false;
+
+  // Se il parametro random è true cambia colore automaticamente ogni tot secondi
+  if (random && millis() - lastAutoChangeTime > autoChangeInterval) {
     lastAutoChangeTime = millis();
-    //changeColorsWithPaths(); // Cambia colore con tracciati ramificati
+    changeColorsWithPaths(); // Cambia colore con tracciati ramificati
     //captureScreenshot();
   }
 }
